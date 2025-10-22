@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pro Registration Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 900px;
+      background: #fff;
+      display: flex;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .left {
+      flex: 1;
+      background: url("https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80")
+        no-repeat center center/cover;
+    }
+
+    .right {
+      flex: 1;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #6e8efb;
+      box-shadow: 0 0 4px rgba(110, 142, 251, 0.4);
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .success-msg,
+    .error-msg {
+      text-align: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .success-msg {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-msg {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(110, 142, 251, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        width: 90%;
+      }
+      .left {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left"></div>
+    <div class="right">
+      <h2>Registration Form</h2>
+      <div id="message-box"></div>
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Enter your name" />
+          <div class="error" id="fullnameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" />
+          <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" placeholder="Enter your phone number" />
+          <div class="error" id="phoneError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" />
+          <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="">Select country</option>
+            <option>India</option>
+            <option>USA</option>
+            <option>UK</option>
+            <option>Canada</option>
+          </select>
+          <div class="error" id="countryError"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <input type="radio" name="gender" value="male" /> Male
+          <input type="radio" name="gender" value="female" /> Female
+          <div class="error" id="genderError"></div>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("registrationForm");
+    const msgBox = document.getElementById("message-box");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Clear errors
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+      msgBox.innerHTML = "";
+
+      const fullname = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const country = document.getElementById("country").value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+      let valid = true;
+
+      // Validation
+      if (!fullname) {
+        document.getElementById("fullnameError").textContent = "Full name required";
+        valid = false;
+      }
+      if (!email || !/^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(email)) {
+        document.getElementById("emailError").textContent = "Enter valid email";
+        valid = false;
+      }
+      if (!phone || !/^[0-9]{10}$/.test(phone)) {
+        document.getElementById("phoneError").textContent = "Enter valid 10-digit phone";
+        valid = false;
+      }
+      if (!password || password.length < 6) {
+        document.getElementById("passwordError").textContent = "Min 6 characters required";
+        valid = false;
+      }
+      if (!country) {
+        document.getElementById("countryError").textContent = "Select a country";
+        valid = false;
+      }
+      if (!gender) {
+        document.getElementById("genderError").textContent = "Select gender";
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Submit to backend
+      const data = { fullname, email, phone, password, country, gender };
+
+      try {
+        const res = await fetch("http://localhost:5000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          msgBox.innerHTML = `<div class="success-msg">${result.message}</div>`;
+          form.reset();
+        } else {
+          msgBox.innerHTML = `<div class="error-msg">${result.message}</div>`;
+        }
+      } catch (error) {
+        msgBox.innerHTML = `<div class="error-msg">Server not reachable. Try again later.</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
